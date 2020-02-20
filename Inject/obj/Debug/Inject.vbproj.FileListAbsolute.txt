@@ -1,0 +1,11 @@
+E:\HOOK\HookMessageBox\Inject\bin\Debug\Inject.exe.config
+E:\HOOK\HookMessageBox\Inject\bin\Debug\Inject.exe
+E:\HOOK\HookMessageBox\Inject\bin\Debug\Inject.pdb
+E:\HOOK\HookMessageBox\Inject\bin\Debug\Inject.xml
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.Form1.resources
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.Resources.resources
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.vbproj.GenerateResource.cache
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.exe
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.xml
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.pdb
+E:\HOOK\HookMessageBox\Inject\obj\Debug\Inject.vbprojAssemblyReference.cache

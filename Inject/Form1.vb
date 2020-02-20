@@ -42,12 +42,12 @@ Public Class Form1
     End Sub
     Dim FileName = ""
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        FileName = Application.StartupPath + "/TestExe.exe"
+        FileName = Application.StartupPath + "/AcitivateTest.exe"
         TextBox1.Text = FileName
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim DllPath As String = Application.StartupPath + "/UnmanagedDll.dll"  '"/NativeDll.dll" "/NativeDlls.dll"  '
+        Dim DllPath As String = Application.StartupPath + "/UnmanagedDll.dll"
         If TextBox2.Text = "" Then Return
         Dim TargetHandle As IntPtr
         Try
@@ -82,7 +82,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim DllPath As String = Application.StartupPath + "/NativeDll.dll"
+        Dim DllPath As String = Application.StartupPath + "/UnmanagedDll.dll"
 
 
         Dim P As New Process
