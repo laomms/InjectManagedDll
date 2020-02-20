@@ -5,7 +5,7 @@
 #include <memory>
 #include <tchar.h>
 #include <cstdio>
-#using "E:\HOOK\HookMessageBox\Inject\bin\Debug\ManagedDll.dll"
+#using "..\ManagedDll.dll"
 //using namespace ManagedDll::Class1;
 using namespace std;
 using namespace System;
@@ -114,7 +114,7 @@ public:
 
 DWORD WINAPI InitHookThread(LPVOID dllMainThread)
 {
-    // µÈ´ıDllMain£¨LoadLibraryÏß³Ì£©½áÊø
+    // ç­‰å¾…DllMainï¼ˆLoadLibraryçº¿ç¨‹ï¼‰ç»“æŸ
     WaitForSingleObject(dllMainThread, INFINITE);
     CloseHandle(dllMainThread);
 
@@ -124,7 +124,7 @@ DWORD WINAPI InitHookThread(LPVOID dllMainThread)
 }
 
 
-#pragma managed(push, off) // ±£Ö¤native
+#pragma managed(push, off) // ä¿è¯native
 BOOL APIENTRY DllMain(HMODULE hModule,
     DWORD  ul_reason_for_call,
     LPVOID lpReserved
@@ -133,11 +133,11 @@ BOOL APIENTRY DllMain(HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        // È¡µ±Ç°Ïß³Ì¾ä±ú
+        // å–å½“å‰çº¿ç¨‹å¥æŸ„
         HANDLE curThread;
         if (!DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), GetCurrentProcess(), &curThread, SYNCHRONIZE, FALSE, 0))
             return FALSE;
-        // DllMainÖĞ²»ÄÜÔËĞĞÍĞ¹Ü´úÂë£¬ËùÒÔÒªÔÚÁíÒ»¸öÏß³Ì³õÊ¼»¯
+        // DllMainä¸­ä¸èƒ½è¿è¡Œæ‰˜ç®¡ä»£ç ï¼Œæ‰€ä»¥è¦åœ¨å¦ä¸€ä¸ªçº¿ç¨‹åˆå§‹åŒ–
         CloseHandle(CreateThread(NULL, 0, InitHookThread, curThread, 0, NULL));
         break;
 
