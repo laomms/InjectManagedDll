@@ -5,7 +5,7 @@
 #include <memory>
 #include <tchar.h>
 #include <cstdio>
-#using "..\ManagedDll.dll"
+#using ""D:\InlineHook-master\Inject\bin\Debug\ManagedDll.dll""
 //using namespace ManagedDll::Class1;
 using namespace std;
 using namespace System;
