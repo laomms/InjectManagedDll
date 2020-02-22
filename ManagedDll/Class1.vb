@@ -3,12 +3,7 @@ Imports System.Runtime.InteropServices
 
 Public Class Class1
 
-	<DllImport("wininet.dll")>
-    Public Shared Function HttpOpenRequestW(hConnect As IntPtr, szVerb As IntPtr, szURI As IntPtr, szHttpVersion As IntPtr, szReferer As IntPtr, accetpType As IntPtr, dwflags As Integer, dwcontext As IntPtr) As IntPtr
-    End Function
-    <DllImport("wininet.dll", SetLastError:=True)>
-    Public Shared Function InternetReadFile(ByVal hFile As IntPtr, ByVal lpBuffer As IntPtr, ByVal dwNumberOfBytesToRead As Integer, ByRef lpdwNumberOfBytesRead As Integer) As Boolean
-    End Function
+	
 
     Private MessageBoxW_Hook As New APIHOOK()
     Private MessageBoxA_Hook As New APIHOOK()
