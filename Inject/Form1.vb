@@ -42,7 +42,7 @@ Public Class Form1
     End Sub
     Dim FileName = ""
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        FileName = Application.StartupPath + "\测试目标程序.exe"
+        FileName = Application.StartupPath + "\AcitivateTest.exe"
         TextBox1.Text = FileName
     End Sub
 

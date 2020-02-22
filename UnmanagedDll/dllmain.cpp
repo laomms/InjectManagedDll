@@ -5,24 +5,96 @@
 #include <memory>
 #include <tchar.h>
 #include <cstdio>
-#using "D:\InlineHook-master\Inject\bin\Debug\ManagedDll.dll"
-//using namespace ManagedDll::Class1;
+#include "releaseHelper.h"
+#include <iostream>
+#include "resource.h"
+#include <filesystem>
+#using "D:\HOOK\InlineHook\Inject\bin\Debug\ManagedDll.dll"
 using namespace std;
 using namespace System;
 using namespace Reflection;
 
 
 
-#pragma pack(pop)    
+HINSTANCE __stdcall GetInstanceFromAddress(PVOID pEip)
+{
+    _ASSERTE(pEip != NULL);
+    MEMORY_BASIC_INFORMATION mem;
+    if (VirtualQuery(pEip, &mem, sizeof(mem)))
+    {
+        _ASSERTE(mem.Type == MEM_IMAGE);
+        _ASSERTE(mem.AllocationBase != NULL);
+        return (HINSTANCE)mem.AllocationBase;
+    }
+    return NULL;
+}
+
+
+__declspec(naked)
+HINSTANCE __stdcall GetCurrentInstance()
+{
+    __asm
+    {
+#ifdef _M_IX86
+        mov eax, [esp]
+        push eax
+        jmp GetInstanceFromAddress
+#else
+# error This machine type is not supported.
+#endif
+    }
+}
+
+//ManagedDll.dll
+bool extractResource(const HINSTANCE hInstance, WORD resourceID, const char* m_strResourceType, LPCTSTR szFilename)
+{
+    bool bSuccess = false;
+    try
+    {
+        HRSRC hResource = FindResource(hInstance, MAKEINTRESOURCE(resourceID), m_strResourceType);
+        HGLOBAL hFileResource = LoadResource(hInstance, hResource);
+        LPVOID lpFile = LockResource(hFileResource);
+        DWORD dwSize = SizeofResource(hInstance, hResource);
+        HANDLE hFile = CreateFile(szFilename, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        HANDLE hFileMap = CreateFileMapping(hFile, NULL, PAGE_READWRITE, 0, dwSize, NULL);
+        LPVOID lpAddress = MapViewOfFile(hFileMap, FILE_MAP_WRITE, 0, 0, 0);
+        CopyMemory(lpAddress, lpFile, dwSize);
+        UnmapViewOfFile(lpAddress);
+        CloseHandle(hFileMap);
+        CloseHandle(hFile);
+        bSuccess = true;
+    }
+    catch (...)
+    {
+        // Whatever
+    }
+    return bSuccess;
+}
+
+
+void MyTestFunction()
+{
+    ManagedDll::Class1^ ClassFunc = gcnew ManagedDll::Class1();
+    ClassFunc->StartHook();
+}
 
 DWORD WINAPI InitHookThread(LPVOID dllMainThread)
 {
     // 等待DllMain（LoadLibrary线程）结束
     WaitForSingleObject(dllMainThread, INFINITE);
     CloseHandle(dllMainThread);
+    TCHAR dll_path[MAX_PATH] = { 0 };
+    GetModuleFileName(GetCurrentInstance(), dll_path, MAX_PATH);
+    string strPath = (string)dll_path;;
+    int pos = strPath.find_last_of('\\', strPath.length());
+    string Dll_Dir = strPath.substr(0, pos) + "\\ManagedDll.dll";
 
-    ManagedDll::Class1^ ClassFunc = gcnew ManagedDll::Class1();
-    ClassFunc->StartHook();
+    BOOL bSuccess = extractResource(GetCurrentInstance(), IDR_DLLS2, "DLLS",Dll_Dir.c_str());
+    if (bSuccess)
+    {
+        MyTestFunction();
+    }  
+   
     return 0;   
 }
 
